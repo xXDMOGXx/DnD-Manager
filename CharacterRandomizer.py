@@ -3,6 +3,8 @@ import numpy as np
 
 smart_random = True
 force_best_fit = False
+drop_lowest_stat_roll = True
+rig_stat_roll = False
 show_extras = True
 extras_list = np.array([[0, 0, 0, 0, 0, 0]])
 rand_character_class = ""
@@ -14,7 +16,11 @@ rand_languages = True
 rand_magic = True
 
 
-def roll_random(sides, num_dice, drop_lowest):
+def roll_random(sides, num_dice, drop_lowest, rig_roll):
+    if rig_roll:
+        if drop_lowest:
+            num_dice -= 1
+        return sides * num_dice
     roll_list = []
     for _ in range(num_dice):
         roll_list.append(random.randrange(1, sides + 1))
@@ -140,12 +146,12 @@ def randomize_race(character_class):
 
 
 def randomize_stat_points(character_class, race):
-    val1 = roll_random(6, 4, True)
-    val2 = roll_random(6, 4, True)
-    val3 = roll_random(6, 4, True)
-    val4 = roll_random(6, 4, True)
-    val5 = roll_random(6, 4, True)
-    val6 = roll_random(6, 4, True)
+    val1 = roll_random(6, 4, drop_lowest_stat_roll, rig_stat_roll)
+    val2 = roll_random(6, 4, drop_lowest_stat_roll, rig_stat_roll)
+    val3 = roll_random(6, 4, drop_lowest_stat_roll, rig_stat_roll)
+    val4 = roll_random(6, 4, drop_lowest_stat_roll, rig_stat_roll)
+    val5 = roll_random(6, 4, drop_lowest_stat_roll, rig_stat_roll)
+    val6 = roll_random(6, 4, drop_lowest_stat_roll, rig_stat_roll)
     random_stats = [val1, val2, val3, val4, val5, val6]
     stats_reordered = []
     racial_bonus = []
