@@ -1,12 +1,9 @@
 import random
-import numpy as np
 
 smart_random = True
 force_best_fit = False
-drop_lowest_stat_roll = True
-rig_stat_roll = False
 show_extras = True
-extras_list = np.array([[0, 0, 0, 0, 0, 0]])
+extras_list = []
 rand_character_class = ""
 rand_race = ""
 rand_stats = True
@@ -16,11 +13,14 @@ rand_languages = True
 rand_magic = True
 
 
-def roll_random(sides, num_dice, drop_lowest, rig_roll):
-    if rig_roll:
-        if drop_lowest:
-            num_dice -= 1
-        return sides * num_dice
+def add_array(array1, array2):
+    array3 = []
+    for _ in range(len(array1)):
+        array3.append(array1[_] + array2[_])
+    return array3
+
+
+def roll_random(sides, num_dice, drop_lowest):
     roll_list = []
     for _ in range(num_dice):
         roll_list.append(random.randrange(1, sides + 1))
@@ -146,52 +146,52 @@ def randomize_race(character_class):
 
 
 def randomize_stat_points(character_class, race):
-    val1 = roll_random(6, 4, drop_lowest_stat_roll, rig_stat_roll)
-    val2 = roll_random(6, 4, drop_lowest_stat_roll, rig_stat_roll)
-    val3 = roll_random(6, 4, drop_lowest_stat_roll, rig_stat_roll)
-    val4 = roll_random(6, 4, drop_lowest_stat_roll, rig_stat_roll)
-    val5 = roll_random(6, 4, drop_lowest_stat_roll, rig_stat_roll)
-    val6 = roll_random(6, 4, drop_lowest_stat_roll, rig_stat_roll)
+    val1 = roll_random(6, 4, True)
+    val2 = roll_random(6, 4, True)
+    val3 = roll_random(6, 4, True)
+    val4 = roll_random(6, 4, True)
+    val5 = roll_random(6, 4, True)
+    val6 = roll_random(6, 4, True)
     random_stats = [val1, val2, val3, val4, val5, val6]
     stats_reordered = []
     racial_bonus = []
     if race == "Dwarf":
-        racial_bonus = np.array([0, 0, 2, 0, 0, -2])
+        racial_bonus = [0, 0, 2, 0, 0, -2]
     elif race == "High Elf":
-        racial_bonus = np.array([0, 2, -2, 0, 0, 0])
+        racial_bonus = [0, 2, -2, 0, 0, 0]
     elif race == "Gray Elf":
-        racial_bonus = np.array([-2, 2, -2, 2, 0, 0])
+        racial_bonus = [-2, 2, -2, 2, 0, 0]
     elif race == "Gnome":
-        racial_bonus = np.array([-2, 0, 2, 0, 0, 0])
+        racial_bonus = [-2, 0, 2, 0, 0, 0]
     elif race == "Half-Orc":
-        racial_bonus = np.array([2, 0, 0, -2, 0, -2])
+        racial_bonus = [2, 0, 0, -2, 0, -2]
     elif race == "Halfling":
-        racial_bonus = np.array([-2, 2, 0, 0, 0, 0])
+        racial_bonus = [-2, 2, 0, 0, 0, 0]
     elif race == "Human":
-        racial_bonus = np.array([0, 0, 0, 0, 0, 0])
-    extras_list[0] = racial_bonus
+        racial_bonus = [0, 0, 0, 0, 0, 0]
+    extras_list.append(racial_bonus)
     if smart_random:
         random_stats.sort(reverse=True)
         if character_class == "Barbarian":
-            stats_reordered = (np.array([random_stats[0], random_stats[2], random_stats[1], random_stats[4], random_stats[3], random_stats[5]] + racial_bonus))
+            stats_reordered = add_array([random_stats[0], random_stats[2], random_stats[1], random_stats[4], random_stats[3], random_stats[5]], racial_bonus)
         elif character_class == "Bard":
-            stats_reordered = (np.array([random_stats[4], random_stats[3], random_stats[2], random_stats[1], random_stats[5], random_stats[0]] + racial_bonus))
+            stats_reordered = add_array([random_stats[4], random_stats[3], random_stats[2], random_stats[1], random_stats[5], random_stats[0]], racial_bonus)
         elif character_class == "Fighter":
-            stats_reordered = (np.array([random_stats[0], random_stats[2], random_stats[1], random_stats[3], random_stats[4], random_stats[5]] + racial_bonus))
+            stats_reordered = add_array([random_stats[0], random_stats[2], random_stats[1], random_stats[3], random_stats[4], random_stats[5]], racial_bonus)
         elif character_class == "Monk":
-            stats_reordered = (np.array([random_stats[0], random_stats[2], random_stats[1], random_stats[4], random_stats[3], random_stats[5]] + racial_bonus))
+            stats_reordered = add_array([random_stats[0], random_stats[2], random_stats[1], random_stats[4], random_stats[3], random_stats[5]], racial_bonus)
         elif character_class == "Paladin":
-            stats_reordered = (np.array([random_stats[1], random_stats[4], random_stats[2], random_stats[5], random_stats[3], random_stats[0]] + racial_bonus))
+            stats_reordered = add_array([random_stats[1], random_stats[4], random_stats[2], random_stats[5], random_stats[3], random_stats[0]], racial_bonus)
         elif character_class == "Rogue":
-            stats_reordered = (np.array([random_stats[5], random_stats[0], random_stats[2], random_stats[1], random_stats[3], random_stats[4]] + racial_bonus))
+            stats_reordered = add_array([random_stats[5], random_stats[0], random_stats[2], random_stats[1], random_stats[3], random_stats[4]], racial_bonus)
         elif character_class == "Scout":
-            stats_reordered = (np.array([random_stats[3], random_stats[0], random_stats[1], random_stats[2], random_stats[4], random_stats[5]] + racial_bonus))
+            stats_reordered = add_array([random_stats[3], random_stats[0], random_stats[1], random_stats[2], random_stats[4], random_stats[5]], racial_bonus)
         elif character_class == "Warlock":
-            stats_reordered = (np.array([random_stats[5], random_stats[1], random_stats[2], random_stats[3], random_stats[3], random_stats[0]] + racial_bonus))
+            stats_reordered = add_array([random_stats[5], random_stats[1], random_stats[2], random_stats[3], random_stats[3], random_stats[0]], racial_bonus)
         elif character_class == "Wizard":
-            stats_reordered = (np.array([random_stats[4], random_stats[3], random_stats[1], random_stats[0], random_stats[2], random_stats[5]] + racial_bonus))
+            stats_reordered = add_array([random_stats[4], random_stats[3], random_stats[1], random_stats[0], random_stats[2], random_stats[5]], racial_bonus)
     else:
-        stats_reordered = (np.array([random_stats[0], random_stats[1], random_stats[2], random_stats[3], random_stats[4], random_stats[5]] + racial_bonus))
+        stats_reordered = add_array([random_stats[0], random_stats[1], random_stats[2], random_stats[3], random_stats[4], random_stats[5]], racial_bonus)
     return stats_reordered
 
 
@@ -301,12 +301,10 @@ else:
 print("Str: " + str(strength) + ", Dex: " + str(dexterity) + ", Con: " + str(constitution) + ", Int: " + str(intelligence) + ", Wis: " + str(wisdom) + ", Cha: " + str(charisma))
 if show_extras:
     print("Racial Bonuses: ", end=" ")
-    for i in range(5):
-        print(str(extras_list[0][i]) + ",", end=" ")
-    print(extras_list[0][5])
+    print(extras_list[0])
     print("Stat Modifiers: ", end=" ")
-    print(str(rand_stat_modifiers[0]) + ", " + str(rand_stat_modifiers[1]) + ", " + str(rand_stat_modifiers[2]) + ", " + str(rand_stat_modifiers[3]) + ", " + str(rand_stat_modifiers[4]) + ", " + str(rand_stat_modifiers[5]))
-print("")
+    print(rand_stat_modifiers)
+    print("")
 if rand_languages:
     rand_language_list = randomize_language(rand_race, rand_stat_modifiers[3])
     print("Languages: ")
