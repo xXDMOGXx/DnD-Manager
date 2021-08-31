@@ -2,6 +2,7 @@ import random
 
 smart_random = True
 force_best_fit = False
+drop_lowest_stat_roll = True
 show_extras = True
 extras_list = []
 rand_character_class = ""
@@ -21,6 +22,8 @@ def add_array(array1, array2):
 
 
 def roll_random(sides, num_dice, drop_lowest):
+    if drop_lowest:
+        num_dice += 1
     roll_list = []
     for _ in range(num_dice):
         roll_list.append(random.randrange(1, sides + 1))
@@ -146,12 +149,12 @@ def randomize_race(character_class):
 
 
 def randomize_stat_points(character_class, race):
-    val1 = roll_random(6, 4, True)
-    val2 = roll_random(6, 4, True)
-    val3 = roll_random(6, 4, True)
-    val4 = roll_random(6, 4, True)
-    val5 = roll_random(6, 4, True)
-    val6 = roll_random(6, 4, True)
+    val1 = roll_random(6, 3, drop_lowest_stat_roll)
+    val2 = roll_random(6, 3, drop_lowest_stat_roll)
+    val3 = roll_random(6, 3, drop_lowest_stat_roll)
+    val4 = roll_random(6, 3, drop_lowest_stat_roll)
+    val5 = roll_random(6, 3, drop_lowest_stat_roll)
+    val6 = roll_random(6, 3, drop_lowest_stat_roll)
     random_stats = [val1, val2, val3, val4, val5, val6]
     stats_reordered = []
     racial_bonus = []
@@ -203,55 +206,52 @@ def randomize_language(race, intelligence_modifier):
     half_orc_bonus_languages = ["Draconic", "Giant", "Gnoll", "Goblin", "Abyssal"]
     halfling_bonus_languages = ["Dwarven", "Elven", "Gnome", "Goblin", "Orc"]
     bonus_language = []
-    if smart_random:
-        if race == "Dwarf":
-            if intelligence_modifier > 0:
-                for _ in range(intelligence_modifier):
-                    bonus_language.append(dwarf_bonus_languages[random.randrange(0, len(dwarf_bonus_languages))])
-                    dwarf_bonus_languages.remove(bonus_language[_])
-            return ["Common", "Dwarven"] + bonus_language
-        elif race == "High Elf":
-            if intelligence_modifier > 0:
-                for _ in range(intelligence_modifier):
-                    bonus_language.append(elf_bonus_languages[random.randrange(0, len(elf_bonus_languages))])
-                    elf_bonus_languages.remove(bonus_language[_])
-            return ["Common", "Elven"] + bonus_language
-        elif race == "Gray Elf":
-            if intelligence_modifier > 0:
-                for _ in range(intelligence_modifier):
-                    bonus_language.append(elf_bonus_languages[random.randrange(0, len(elf_bonus_languages))])
-                    elf_bonus_languages.remove(bonus_language[_])
-            return ["Common", "Elven"] + bonus_language
-        elif race == "Gnome":
-            if intelligence_modifier > 0:
-                for _ in range(intelligence_modifier):
-                    bonus_language.append(gnome_bonus_languages[random.randrange(0, len(gnome_bonus_languages))])
-                    gnome_bonus_languages.remove(bonus_language[_])
-            return ["Common", "Gnome"] + bonus_language
-        elif race == "Half-Orc":
-            if intelligence_modifier > 0:
-                for _ in range(intelligence_modifier):
-                    bonus_language.append(half_orc_bonus_languages[random.randrange(0, len(half_orc_bonus_languages))])
-                    half_orc_bonus_languages.remove(bonus_language[_])
-            return ["Common", "Orc"] + bonus_language
-        elif race == "Halfling":
-            if intelligence_modifier > 0:
-                for _ in range(intelligence_modifier):
-                    bonus_language.append(halfling_bonus_languages[random.randrange(0, len(halfling_bonus_languages))])
-                    halfling_bonus_languages.remove(bonus_language[_])
-            return ["Common", "Halfling"] + bonus_language
-        elif race == "Human":
-            if intelligence_modifier > 0:
-                all_languages.remove("Druidic")
-                all_languages.remove("Common")
-                for _ in range(intelligence_modifier):
-                    bonus_language.append(all_languages[random.randrange(0, len(all_languages))])
-                    all_languages.remove(bonus_language[_])
-            return ["Common"] + bonus_language
+    if race == "Dwarf":
+        if intelligence_modifier > 0:
+            for _ in range(intelligence_modifier):
+                bonus_language.append(dwarf_bonus_languages[random.randrange(0, len(dwarf_bonus_languages))])
+                dwarf_bonus_languages.remove(bonus_language[_])
+        return ["Common", "Dwarven"] + bonus_language
+    elif race == "High Elf":
+        if intelligence_modifier > 0:
+            for _ in range(intelligence_modifier):
+                bonus_language.append(elf_bonus_languages[random.randrange(0, len(elf_bonus_languages))])
+                elf_bonus_languages.remove(bonus_language[_])
+        return ["Common", "Elven"] + bonus_language
+    elif race == "Gray Elf":
+        if intelligence_modifier > 0:
+            for _ in range(intelligence_modifier):
+                bonus_language.append(elf_bonus_languages[random.randrange(0, len(elf_bonus_languages))])
+                elf_bonus_languages.remove(bonus_language[_])
+        return ["Common", "Elven"] + bonus_language
+    elif race == "Gnome":
+        if intelligence_modifier > 0:
+            for _ in range(intelligence_modifier):
+                bonus_language.append(gnome_bonus_languages[random.randrange(0, len(gnome_bonus_languages))])
+                gnome_bonus_languages.remove(bonus_language[_])
+        return ["Common", "Gnome"] + bonus_language
+    elif race == "Half-Orc":
+        if intelligence_modifier > 0:
+            for _ in range(intelligence_modifier):
+                bonus_language.append(half_orc_bonus_languages[random.randrange(0, len(half_orc_bonus_languages))])
+                half_orc_bonus_languages.remove(bonus_language[_])
+        return ["Common", "Orc"] + bonus_language
+    elif race == "Halfling":
+        if intelligence_modifier > 0:
+            for _ in range(intelligence_modifier):
+                bonus_language.append(halfling_bonus_languages[random.randrange(0, len(halfling_bonus_languages))])
+                halfling_bonus_languages.remove(bonus_language[_])
+        return ["Common", "Halfling"] + bonus_language
+    elif race == "Human":
+        if intelligence_modifier > 0:
+            all_languages.remove("Druidic")
+            all_languages.remove("Common")
+            for _ in range(intelligence_modifier):
+                bonus_language.append(all_languages[random.randrange(0, len(all_languages))])
+                all_languages.remove(bonus_language[_])
+        return ["Common"] + bonus_language
 
 
-if not smart_random:
-    force_best_fit = False
 if rand_character_class == "":
     rand_character_class = randomize_class()
 if rand_race == "":
