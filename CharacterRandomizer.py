@@ -1,8 +1,8 @@
 import random
 
-smart_random = True
+smart_random = False
 force_best_fit = False
-drop_lowest_stat_roll = True
+drop_lowest_stat_roll = False
 show_extras = True
 extras_list = []
 rand_character_class = ""
@@ -30,15 +30,10 @@ def roll_random(sides, num_dice, drop_lowest):
     roll_list.sort()
     if drop_lowest:
         roll_list.remove(roll_list[0])
-        value = 0
-        for _ in range(len(roll_list)):
-            value += roll_list[_]
-        return value
-    else:
-        value = 0
-        for _ in range(len(roll_list)):
-            value += roll_list[_]
-        return value
+    value = 0
+    for _ in range(len(roll_list)):
+        value += roll_list[_]
+    return value
 
 
 def randomize_class():
@@ -250,6 +245,16 @@ def randomize_language(race, intelligence_modifier):
                 bonus_language.append(all_languages[random.randrange(0, len(all_languages))])
                 all_languages.remove(bonus_language[_])
         return ["Common"] + bonus_language
+
+
+def randomize_feats(character_class, strength_modifier, dexterity_modifier, intelligence_modifier, wisdom_modifier):
+    all_classless_feats_without_prerequisites = ["Acrobatic", "Agile", "Alertness", "Animal Affinity", "Armor Proficiency (Light)", "Athletic",
+                                                 "Blind-Fight", "Combat Reflexes", "Deceitful", "Deft Hands", "Diligent", "Endurance", "Great Fortitude",
+                                                 "Improved Counterspell", "Improved Initiative", "Improved Unarmed Strike", "Investigator", "Iron Will",
+                                                 "Lightning Reflexes", "Magical Aptitude", "Martial Weapon Proficiency", "Negotiator", "Nimble Fingers",
+                                                 "Persuasive", "Point Blank Shot", "Run", "Self-Sufficient", "Shield Proficiency", "Skill Focus",
+                                                 "Stealthy", "Toughness", "Track"]
+    all_spell_feats_without_prerequisites = ["Combat Casting", "Eschew Materials", "Magical Aptitude", "Spell Focus", "Spell Penetration"]
 
 
 if rand_character_class == "":
